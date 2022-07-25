@@ -193,3 +193,8 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'midnightroam1@gmail.com'
 EMAIL_HOST_PASSWORD = 'moxeoiankohkeyog'
+
+
+REST_FRAMEWORK = {
+    "SEARCH_PARAM": "q"
+}

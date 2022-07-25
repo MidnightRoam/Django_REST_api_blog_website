@@ -1,5 +1,5 @@
 from django.core.mail import send_mail
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, filters
 from rest_framework.views import APIView
 
 from .serializers import PostSerializer, TagSerializer, ContactSerializer
@@ -17,6 +17,8 @@ class PageNumberSetPagination(pagination.PageNumberPagination):
 
 
 class PostViewSet(viewsets.ModelViewSet):
+    search_fields = ['content', 'h1']
+    filer_backends = (filters.SearchFilter,)
     serializer_class = PostSerializer
     queryset = Post.objects.all()
     lookup_field = 'slug'
