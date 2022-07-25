@@ -2,7 +2,7 @@ from django.core.mail import send_mail
 from rest_framework import viewsets, permissions, filters
 from rest_framework.views import APIView
 
-from .serializers import PostSerializer, TagSerializer, ContactSerializer
+from .serializers import PostSerializer, TagSerializer, ContactSerializer, RegisterSerializer, UserSerializer
 from .models import Post
 from rest_framework.response import Response
 from rest_framework import pagination
@@ -63,3 +63,17 @@ class FeedBackView(APIView):
             message = data.get('message')
             send_mail(f'From {name} | {subject}', message, from_email, ['midnightroam1@gmail.com'])
             return Response({"success": "Sent"})
+
+
+class RegisterView(generics.GenericAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "message": "User successfully created",
+        })
